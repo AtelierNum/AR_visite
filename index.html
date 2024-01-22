@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+
+<head>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/3.1.0/aframe/build/aframe-ar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js">
+  </script>
+  <!--Bootstrap Bootswatch theme - other themes available here: https://bootswatch.com 
+  <link rel="stylesheet"
+    href="https://raw.githubusercontent.com/thomaspark/bootswatch/v5/dist/flatly/bootstrap.min.css">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
+    integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+  </script>
+  <script src="./loader.js"></script>-->
+</head>
+
+
+<body style="margin : 0px; overflow: hidden;">
+
+  <a-scene preloader="slowLoad: true;" embedded
+    arjs="sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; trackingMethod: best ; changeMatrixMode: modelViewMatrix;"
+    vr-mode-ui="enabled: false"
+    renderer="sortObjects: true; antialias: true; colorManagement: true; physicallyCorrectLights; logarithmicDepthBuffer: true;"
+    smooth=" true" smoothCount="50" smoothTolerance=".5" smoothThreshold="5" sourceWidth="1280" sourceHeight="720"
+    displayWidth="1920" displayHeight="1080" loading-screen="dotsColor: red; backgroundColor: black">
+
+    <!--------------------------------------
+    ASSETS LOADING
+    ---------------------------------------->
+    <a-assets>
+
+      <!--MARKERS grands murs atelier-->
+      <video id="vidateliernum" src="./assets/ateliernum_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="vidtimelapse" src="./assets/Timelapse_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+
+      <!--MARKERS armoires-->
+      <img id="armoire00" src="./assets/Armoire00.jpg" preload="none">
+      <img id="armoire01" src="./assets/Armoire01.jpg" preload="none">
+      <img id="armoire02" src="./assets/Armoire02.jpg" preload="none">
+
+      <!--Marker armoire basse - 3E-->
+      <a-asset-item id="plant" src="./assets/plant_modelling.glb"></a-asset-item>
+      <a-asset-item id="scene-obj" src="./assets/scene.obj"></a-asset-item>
+      <a-asset-item id="scene-mtl" src="./assets/scene.mtl"></a-asset-item>
+
+      <!--Marker studios-->
+      <video id="vidfondvert" src="./assets/Entry_fond_vert_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="vidphoto" src="./assets/Entry_prise_de_vue_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+
+      <!--Marker axidraw-->
+      <video id="vidaxidraw1" src="./assets/Axidraw00_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="vidaxidraw2" src="./assets/Axidraw02_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="vidaxidraw3" src="./assets/Axidraw03.mp4" autoplay="true" loop="true" preload="auto" controls="false"
+        playsinline="" webkit-playsinline="" timeout="10000"></video>
+
+      <!--Marker bureau-->
+      <video id="vidtd" src="./assets/soft_TD.mp4" autoplay="true" loop="true" preload="auto" controls="false"
+        playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="vidunity" src="./assets/soft_unity.mp4" autoplay="true" loop="true" preload="auto" controls="false"
+        playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="vidcables" src="./assets/soft_cables.mp4" autoplay="true" loop="true" preload="auto" controls="false"
+        playsinline="" webkit-playsinline="" timeout="10000"></video>
+
+      <!--Marker mur machines : mapping-->
+      <video id="vidmapping0" src="./assets/Mapping00_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline=" " timeout="10000"></video>
+      <video id="vidmapping1" src="./assets/Mapping07_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline=" " timeout="10000"></video>
+      <video id="vidmapping2" src="./assets/Mapping04_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline=" " timeout="10000"></video>
+
+      <!--Marker mur machines : misc-->
+      <video id="lumiere" src="./assets/Diorama_lumiere00_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="ml" src="./assets/ML00_H.264.mp4" autoplay="true" loop="true" preload="auto" controls="false"
+        playsinline="" webkit-playsinline="" timeout="10000"></video>
+
+      <!-- Markers libres : arduino -->
+      <video id="arduino0" src="./assets/Arduino_autonomous_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino1" src="./assets/Arduino_bobine_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino2" src="./assets/Arduino_jeu_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino3" src="./assets/Arduino_paper_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino4" src="./assets/Arduino_robot_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino5" src="./assets/Arduino_speech_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino6" src="./assets/Arduino06_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+      <video id="arduino7" src="./assets/Arduino10_H.264.mp4" autoplay="true" loop="true" preload="auto"
+        controls="false" playsinline="" webkit-playsinline="" timeout="10000"></video>
+
+
+    </a-assets>
+
+    <!--------------------------------------
+    MARKER arduino : misc
+    ---------------------------------------->
+    <a-marker type="barcode" value="50" arduino0 id="a-arduino0" size="0.4">
+      <a-video src="#arduino0" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="55" arduino1 id="a-arduino1" size="0.4">
+      <a-video src="#arduino1" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="54" arduino1 id="a-arduino2" size="0.4">
+      <a-video src="#arduino2" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="53" arduino1 id="a-arduino3" size="0.4">
+      <a-video src="#arduino3" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="52" arduino1 id="a-arduino4" size="0.4">
+      <a-video src="#arduino4" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="51" arduino1 id="a-arduino5" size="0.4">
+      <a-video src="#arduino5" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="58" arduino1 id="a-arduino6" size="0.4">
+      <a-video src="#arduino6" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="56" arduino1 id="a-arduino7" size="0.4">
+      <a-video src="#arduino7" rotation="270 0 0" width="2.75" height="2.5"></a-video>
+    </a-marker>
+
+
+
+    <!--------------------------------------
+    MARKERS grands murs atelier
+    ---------------------------------------->
+    <!-- 0 : atelier num website-->
+    <a-marker type="barcode" value="1" website id="a-website" size="1.3">
+      <a-entity
+        text="value:www.ateliernum.github.io; color:#F00020; 
+        width: 6; height: auto; align:center;
+        shader: msdf; 
+        font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/montserrat/Montserrat-SemiBold.json"
+        side="double" rotation="270 180 0" position="0 0 1.2"></a-entity>
+      <a-video src="#vidateliernum" rotation="270 180 0" width="3.50" height="2.2"></a-video>
+    </a-marker>
+
+    <!-- 1 : atelier num timelapse-->
+    <a-marker type="barcode" value="0" timelapse id="a-timelapse" size="1.3">
+      <a-entity
+        text="value:2 heures à l'ateliernum; color:#F00020; 
+        width: 6; height: auto; align:center;
+        shader: msdf; 
+        font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/montserrat/Montserrat-SemiBold.json"
+        side="double" rotation="270 180 0" position="0 0 1.2"></a-entity>
+      <a-video src="#vidtimelapse" rotation="270 180 0" width="3.5" height="2.25"></a-video>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKERS amoires
+    ---------------------------------------->
+    <a-marker type="barcode" value="36" size="0.02">
+      <a-entity
+        text="value:Arduino \n cartes et composants; color:#F00020; 
+        width: 15; height: auto; align:center;
+        shader: msdf; 
+        font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/montserrat/Montserrat-SemiBold.json"
+        side="double" rotation="270 -90 0" position="3 0 1"></a-entity>
+      <a-image src="#armoire00" position="-6 0 1" rotation="270 -90 0" width="9.25" height="13.75"></a-image>
+    </a-marker>
+    <a-marker type="barcode" value="38" size="0.02">
+      <a-entity
+        text="value:Arduino \n moteurs et accessoires; color:#F00020; 
+        width: 15; height: auto; align:center;
+        shader: msdf; 
+        font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/montserrat/Montserrat-SemiBold.json"
+        side="double" rotation="270 0 0" position="1 0 -2"></a-entity>
+      <a-image src="#armoire01" position="1 0 6" rotation="270 0 0" width="9.25" height="13.75" smooth=" true"
+        smoothCount="50" smoothTolerance=".5"></a-image>
+    </a-marker>
+    <a-marker type="barcode" value="37" size="0.02" smoothCount="20" smoothTolerance=".01" smoothThreshold="50">
+      <a-entity
+        text="value:Peripheriques \n cameras; color:#F00020; 
+        width: 15; height: auto; align:center;
+        shader: msdf; 
+        font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/montserrat/Montserrat-SemiBold.json"
+        side="double" rotation="270 -90 0" position="2.5 0 1"></a-entity>
+      <a-image src="#armoire02" position="-6 0 1" rotation="270  -90 0" width="9.25" height="13.75"></a-image>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER accueil => P5js animation
+    ---------------------------------------->
+    <a-marker type="barcode" value="14" size="0.01">
+      <a-box width="4" height="4" depth="4" position="0 0 0" material="shader: flat;" draw-canvas1>
+      </a-box>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER armoire basse => plante !
+    ---------------------------------------->
+    <a-marker type="barcode" value="4" size="0.4">
+      <a-entity scale=".2 .2 .2" gltf-model="#plant" rotation="25 90 90" position="0 0 -1.2"></a-entity>
+    </a-marker>
+    <a-marker type="barcode" value="2" size="0.4">
+      <a-entity obj-model=" obj: #scene-obj; mtl: #scene-mtl">
+      </a-entity>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER couloir studios
+    ---------------------------------------->
+    <!-- 20 : fondvert-->
+    <a-marker type="barcode" value="20" fondvert id="a-fondvert" size="0.8">
+      <a-video src="#vidfondvert" rotation="270 0 0" width="5.60" height="4."></a-video>
+    </a-marker>
+    <!-- 21 : photo-->
+    <a-marker type="barcode" value="21" photo id="a-photo" size="0.8">
+      <a-video src="#vidphoto" rotation="270 0 0" width="5.60" height="4."></a-video>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER couloir axidraw
+    ---------------------------------------->
+    <a-marker type="barcode" value="22" axidraw1 id="a-axidraw1" size="0.8">
+      <a-video src="#vidaxidraw1" rotation="270 0 0" width="3.50" height="2."></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="23" axidraw2 id="a-axidraw2" size="0.8">
+      <a-video src="#vidaxidraw2" rotation="270 0 0" width="3.50" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="24" axidraw3 id="a-axidraw3" size="0.8">
+      <a-video src="#vidaxidraw3" rotation="270 0 0" width="3.50" height="2.5"></a-video>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER softs bureaux
+    ---------------------------------------->
+    <a-marker type="barcode" value="5" td id="a-td" size="0.4">
+      <a-video src="#vidtd" rotation="270 0 0" width="3.50" height="2."></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="7" unity id="a-unity" size="0.4">
+      <a-video src="#vidunity" rotation="270 0 0" width="3.50" height="2.5"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="3" cables id="a-cables" size="0.4">
+      <a-video src="#vidcables" rotation="270 0 0" width="3.50" height="2.5"></a-video>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER mur machine : mapping
+    ---------------------------------------->
+    <a-marker type="barcode" value="6" mapping0 id="a-mapping0" size="0.4">
+      <a-video src="#vidmapping0" rotation="270 0 0" width="1.75" height="1.25"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="8" mapping1 id="a-mapping1" size="0.4">
+      <a-video src="#vidmapping1" rotation="270 90 0" width="1.75" height="1.25"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="9" mapping2 id="a-mapping2" size="0.4">
+      <a-video src="#vidmapping2" rotation="270 -90 0" width="1.75" height="1.25"></a-video>
+    </a-marker>
+
+    <!--------------------------------------
+    MARKER mur machine : misc
+    ---------------------------------------->
+    <a-marker type="barcode" value="10" lumiere id="a-lumiere" size="0.4">
+      <a-video src="#lumiere" rotation="270 180 0" width="1.75" height="1.25"></a-video>
+    </a-marker>
+    <a-marker type="barcode" value="11" lumiere id="a-ml" size="0.4">
+      <a-video src="#ml" rotation="270 90 0" width="1.75" height="1.25"></a-video>
+    </a-marker>
+
+
+
+
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+  </a-scene>
+
+  <script type="text/javascript" src="script.js"></script>
+
+  <!--------------------------------------
+    P5JS stuff !
+    ---------------------------------------->
+  <div id="container"></div>
+  <script>
+    // p5js sketch in instance mode - https://p5js.org/examples/instance-mode-instance-container.html
+    let sketch = function (p) {
+      let seed = p.random(9999)
+      p.setup = function () {
+        p.noCanvas();
+        let cnv = p.createCanvas(200, 200);
+        cnv.id("test"); // you need to set this because you'll use it in the a-frame component
+        cnv.hide();
+      };
+
+      p.draw = function () {
+
+        p.clear()
+        p.randomSeed(seed)
+        let step = p.random(10, 35)
+        //p.clear()
+        p.stroke(p.random(255), p.random(255), p.random(255))
+        p.strokeWeight(5)
+        for (let i = 0; i < p.width; i += step) {
+          for (let j = 0; j < p.height; j += step) {
+            if (p.random(1) > 0.5) {
+              p.line(i, j, i + step, j + step)
+            }
+            else {
+              p.line(i, j + step, i + step, j)
+            }
+          }
+        }
+
+        p.push()
+        p.strokeWeight(1)
+        p.stroke(p.random(255), p.random(255), p.random(255))
+        p.fill(p.random(255), p.random(255), p.random(255))
+        p.textAlign(p.CENTER, p.CENTER)
+        p.translate(100, 100)
+        p.rotate(p.millis() * 0.001)
+        p.textSize(36)
+        p.text("Ateliernum !", 0, 0)
+        p.pop()
+
+      };
+    };
+    new p5(sketch, "container"); // bind the canvas to tge div just above this script
+  </script>
+
+
+</body>
+
+</html>
